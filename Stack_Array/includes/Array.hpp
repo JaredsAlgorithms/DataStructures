@@ -1,7 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include <initializer_list>
+#include <iostream>
+#include <array>
 
 namespace MyStaticArray {
 
@@ -13,7 +14,8 @@ namespace MyStaticArray {
     using ReferenceType = ValueType&;
 
    public:
-    ArrayIterator(PointerType ptr) : m_Ptr(ptr) {}
+    ArrayIterator(PointerType base, PointerType ptr, int threshold)
+        : m_Ptr(base), m_Ptr_Base(ptr), m_Upper_Bound(threshold) {}
     ArrayIterator& operator++();
     ArrayIterator& operator--();
 
@@ -28,8 +30,13 @@ namespace MyStaticArray {
     bool operator==(const ArrayIterator&) const;
     bool operator!=(const ArrayIterator&) const;
 
+    size_t distance() const;
+
    private:
-    PointerType m_Ptr;
+    PointerType m_Ptr;  // where the current position is
+    PointerType
+        m_Ptr_Base;     // where the array starts upon creation of the iterator
+    size_t m_Upper_Bound;  // what is out theoretical maxima
   };
 
   template <typename T, size_t S>
@@ -43,6 +50,10 @@ namespace MyStaticArray {
     size_t size() const;
     T& operator[](size_t i);
     T& operator[](size_t i) const;
+
+    bool operator==(const std::array<T, S>&) const;
+    bool operator!=(const std::array<T, S>&) const;
+
     Iterator begin();
     Iterator end();
 

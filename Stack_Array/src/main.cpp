@@ -2,11 +2,12 @@
 
 #include <vector>
 #include "../includes/Array.hpp"
+#include "../includes/ArrayTests.hpp"
 
 int main() {
-  MyStaticArray::Array<int, 5> arr{1, 2, 3};
-  for(int element : arr ) {
-    std::cout << element << std::endl;
-  }
+  ArrayTestSuite suite = ArrayTestSuite();
+  suite.test_initializer_list();
+  suite.test_incrementing_iterator();
+
   return 0;
 }
