@@ -1,10 +1,12 @@
 #pragma once
 
+#include <array>
 #include <initializer_list>
 #include <iostream>
-#include <array>
 
 namespace MyStaticArray {
+
+  enum Direction { LEFT = 0, RIGHT = 1 };
 
   template <typename Array>
   class ArrayIterator {
@@ -14,8 +16,15 @@ namespace MyStaticArray {
     using ReferenceType = ValueType&;
 
    public:
-    ArrayIterator(PointerType base, PointerType ptr, int threshold)
-        : m_Ptr(base), m_Ptr_Base(ptr), m_Upper_Bound(threshold) {}
+    ArrayIterator(PointerType base,
+                  PointerType ptr,
+                  int threshold,
+                  Direction _direction) {
+      this->m_Ptr_Base = base;
+      this->m_Ptr = ptr;
+      this->m_Upper_Bound = threshold;
+      this->direction = _direction;
+    }
     ArrayIterator& operator++();
     ArrayIterator& operator--();
 
@@ -32,10 +41,12 @@ namespace MyStaticArray {
 
     size_t distance() const;
 
+    Direction direction;
+
    private:
     PointerType m_Ptr;  // where the current position is
     PointerType
-        m_Ptr_Base;     // where the array starts upon creation of the iterator
+        m_Ptr_Base;  // where the array starts upon creation of the iterator
     size_t m_Upper_Bound;  // what is out theoretical maxima
   };
 

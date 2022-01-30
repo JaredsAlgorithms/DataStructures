@@ -14,11 +14,29 @@ namespace MyStaticArray {
      * @return ArrayIterator incremented one step
      */
 
+    std::cout << "I am here" << std::endl;
+
+    std::cout << this->direction << std::endl;
+
+    switch (this->direction) {
+      case Direction::LEFT:
+        // Move the pointer to the left, so we need to make the memory address
+        // smaller, eventually converging on the base address
+        std::cout << "I am decrementing the pointer?" << std::endl;
+        --(*this);
+        return *this;
+    };
+
+    // Otherwise, we proceed as if this is a Forward Iterator
+    // Which would be increasing the memory address, converging to
+    // std::end(*this)
+
     if (this->distance() + 1 > this->m_Upper_Bound) {
       throw std::overflow_error(
-          "cannot increment pointer further, exceeds confines of the array");
+          "cannot increment pointer further, exceeds confines of the "
+          "array");
     }
-    this->m_Ptr++;
+    ++this->m_Ptr;
     return *this;
   }
 
@@ -33,6 +51,14 @@ namespace MyStaticArray {
      *
      * @return ArrayIterator decremented one step
      */
+
+    switch (this->direction) {
+      case Direction::LEFT:
+        // Move the pointer to the left, so we need to make the memory address
+        // smaller, eventually converging on the base address
+        ++(*this);
+        return *this;
+    }
 
     if (this->distance() == 0) {
       throw std::underflow_error(
@@ -57,6 +83,14 @@ namespace MyStaticArray {
      * @return ArrayIterator decremented one step
      */
 
+    ArrayIterator _it = *this;
+
+    switch (this->direction) {
+      case Direction::LEFT:
+        ++(*this);
+        return _it;
+    }
+
     if (this->distance() == 0) {
       // NOTE: This might be excessive, because we call --(*this) will already
       // check the distance
@@ -65,7 +99,6 @@ namespace MyStaticArray {
           "cannot decrement pointer further, exceeds confines of the array");
     }
 
-    ArrayIterator _it = *this;
     --(*this);
     return _it;
   }
@@ -85,12 +118,19 @@ namespace MyStaticArray {
      * @return ArrayIterator decremented one step
      */
 
+    ArrayIterator _it = *this;
+
+    switch (this->direction) {
+      case Direction::LEFT:
+        --(*this);
+        return _it;
+    }
+
     if (this->distance() + 1 > this->m_Upper_Bound) {
       throw std::overflow_error(
           "cannot increment pointer, exceeds the confines of the array");
     }
 
-    ArrayIterator _it = *this;
     ++(*this);
     return _it;
   }
@@ -124,7 +164,7 @@ namespace MyStaticArray {
      * Obtain the pointer of the itetator
      *
      * @return ArrayIterator<Array>::PointerType
-    */
+     */
 
     return this->m_Ptr;
   }
@@ -135,7 +175,7 @@ namespace MyStaticArray {
      * Get the value of the pointer the iterator is at
      *
      * @return ArrayIterator<Array>::ReferenceType
-    */
+     */
 
     return *(this->m_Ptr);
   }
@@ -144,9 +184,10 @@ namespace MyStaticArray {
   bool ArrayIterator<Array>::operator==(const ArrayIterator<Array>& rhs) const {
     /*
      * Check if the value contained in both iterators are the same
+     * Not the actual memory address
      *
      * @return bool; true data is the same, false otherwise
-    */
+     */
 
     return *(this->m_Ptr) == *(rhs.m_Ptr);
   }
@@ -157,7 +198,7 @@ namespace MyStaticArray {
      * Check if the value contained in both iterators are not the same
      *
      * @return bool; false if the data is not the same, true otherwise
-    */
+     */
 
     return !ArrayIterator<Array>::operator==(rhs);
   }
@@ -169,6 +210,7 @@ namespace MyStaticArray {
      *
      * @return size_t representing the amount of spaces from the base address
      */
+
     return ((this->m_Ptr - this->m_Ptr_Base) /
             sizeof(ArrayIterator<Array>::ValueType));
   }

@@ -6,8 +6,7 @@
 
 int main() {
   ArrayTestSuite suite = ArrayTestSuite();
-  suite.test_initializer_list();
-  suite.test_incrementing_iterator();
+  suite.conduct_all();
 
   return 0;
 }
