@@ -14,22 +14,6 @@ namespace MyStaticArray {
      * @return ArrayIterator incremented one step
      */
 
-    std::cout << "I am here" << std::endl;
-
-    std::cout << this->direction << std::endl;
-
-    switch (this->direction) {
-      case Direction::LEFT:
-        // Move the pointer to the left, so we need to make the memory address
-        // smaller, eventually converging on the base address
-        std::cout << "I am decrementing the pointer?" << std::endl;
-        --(*this);
-        return *this;
-    };
-
-    // Otherwise, we proceed as if this is a Forward Iterator
-    // Which would be increasing the memory address, converging to
-    // std::end(*this)
 
     if (this->distance() + 1 > this->m_Upper_Bound) {
       throw std::overflow_error(
@@ -51,14 +35,6 @@ namespace MyStaticArray {
      *
      * @return ArrayIterator decremented one step
      */
-
-    switch (this->direction) {
-      case Direction::LEFT:
-        // Move the pointer to the left, so we need to make the memory address
-        // smaller, eventually converging on the base address
-        ++(*this);
-        return *this;
-    }
 
     if (this->distance() == 0) {
       throw std::underflow_error(
@@ -84,12 +60,6 @@ namespace MyStaticArray {
      */
 
     ArrayIterator _it = *this;
-
-    switch (this->direction) {
-      case Direction::LEFT:
-        ++(*this);
-        return _it;
-    }
 
     if (this->distance() == 0) {
       // NOTE: This might be excessive, because we call --(*this) will already
@@ -119,12 +89,6 @@ namespace MyStaticArray {
      */
 
     ArrayIterator _it = *this;
-
-    switch (this->direction) {
-      case Direction::LEFT:
-        --(*this);
-        return _it;
-    }
 
     if (this->distance() + 1 > this->m_Upper_Bound) {
       throw std::overflow_error(

@@ -47,23 +47,11 @@ void ArrayTestSuite::test_incrementing_iterator() {
   Array<int, 5> arr{1, 2, 3, 4, 5};
   ArrayIterator<Array<int, 5>> iter = std::end(arr);
 
-  for (int element : arr) {
-    // Check if we can use a range based for loop
-    std::cout << element << std::endl;
-    continue;
-  }
-
-  std::cout << "DIRECTION" << std::endl;
-
-  std::cout << iter.direction << std::endl;
-
   try {
     ++iter;
   } catch (std::overflow_error e) {
     caught_exception = true;
   }
-
-  return;
 
   if (caught_exception) {
     std::cout
@@ -95,15 +83,9 @@ void ArrayTestSuite::test_decrementing_iterator() {
 
   Array<int, 5> arr{1, 2, 3, 4, 5};
   ArrayIterator<Array<int, 5>> iter = std::end(arr);  // FIXME
-
-  while (iter != std::begin(arr)) {
-    std::cout << *iter << std::endl;
-    --iter;
-  }
-
-  // reset the iterator
-  ArrayIterator<Array<int, 5>> new_iter = std::end(arr);
-  // assert(*iter-- == 5);
-  // assert(--*iter == 4);
-  // assert(*--iter == 4);
+                                                      //
+  std::cout << *iter << std::endl;
+  assert(*iter-- == 5);
+  assert(--*iter == 4);
+  assert(*--iter == 4);
 }

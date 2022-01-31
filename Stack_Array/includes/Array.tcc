@@ -48,11 +48,13 @@ namespace MyStaticArray {
 
   template <typename T, size_t S>
   ArrayIterator<Array<T, S>> Array<T, S>::begin() {
-    return ArrayIterator<Array<T, S>>(this->m_Data, this->m_Data + S, S, Direction::RIGHT);
+    return ArrayIterator<Array<T, S>>(this->m_Data, this->m_Data, S,
+                                      Direction::RIGHT);
   }
 
   template <typename T, size_t S>
   ArrayIterator<Array<T, S>> Array<T, S>::end() {
-    return ArrayIterator<Array<T, S>>(this->m_Data + S, this->m_Data, S, Direction::LEFT);
+    return ArrayIterator<Array<T, S>>(this->m_Data + S, this->m_Data, S,
+                                      Direction::LEFT);
   }
 };  // namespace MyStaticArray
